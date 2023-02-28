@@ -1,10 +1,16 @@
 import React from 'react';
 
-function GuessInput() {
+function GuessInput({ guessResults, setGuessResults }) {
   const [guessInput, setGuessInput] = React.useState('');
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({ guess: guessInput.toUpperCase() });
+    const guess = guessInput.toUpperCase();
+
+    const nowGuessResults = [...guessResults]
+    nowGuessResults.push({ value: guess, key: Math.random() })
+    setGuessResults(nowGuessResults)
+
+    console.log({ guess });
     setGuessInput('');
   };
   return <form className="guess-input-wrapper" onSubmit={handleSubmit}>
