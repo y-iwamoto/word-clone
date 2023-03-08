@@ -1,7 +1,9 @@
 import React from 'react';
 
-function GuessInput({ guessResults, setGuessResults }) {
+function GuessInput({ guessResults, setGuessResults, answer, setStatus }) {
   const [guessInput, setGuessInput] = React.useState('');
+  const [isDisabledInputText, setIsDisabledInputText] = React.useState(false);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const guess = guessInput.toUpperCase();
@@ -12,6 +14,19 @@ function GuessInput({ guessResults, setGuessResults }) {
 
     console.log({ guess });
     setGuessInput('');
+
+    if (guess === answer) {
+      setStatus('happy')
+      setIsDisabledInputText(true)
+      return;
+    }
+
+    if (nowGuessResults.length === 6) {
+      setStatus('sad')
+      setIsDisabledInputText(true)
+      return;
+    }
+
   };
   return <form className="guess-input-wrapper" onSubmit={handleSubmit}>
     <label htmlFor="guess-input">Enter guess:</label>
@@ -22,7 +37,8 @@ function GuessInput({ guessResults, setGuessResults }) {
       onChange={(e) => {
         setGuessInput(e.target.value);
       }}
-      pattern='[A-Za-z]{5}' />
+      pattern='[A-Za-z]{5}'
+      disabled={isDisabledInputText} />
   </form>;
 }
 
